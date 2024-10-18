@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    #character {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      background-image: url('https://www.wizard.financial/static/media/wizaart-img.56787174.gif');
+      background-size: cover;
+      transition: transform 0.5s;
+    }
+
+    .flip-left {
+      transform: scaleX(-1);
+    }
+
+    .flip-right {
+      transform: scaleX(1);
+    }
+  </style>
+  <title>Move Character</title>
+</head>
+<body>
+
+  <div id="character" class="flip-right"></div>
+
+  <script>
+    const character = document.getElementById('character');
+
+    window.addEventListener('click', (e) => {
+      const characterRect = character.getBoundingClientRect();
+      const characterX = characterRect.left + characterRect.width / 2;
+      const characterY = characterRect.top + characterRect.height / 2;
+
+      const targetX = e.clientX;
+      const targetY = e.clientY;
+
+      const distanceX = targetX - characterX;
+      const distanceY = targetY - characterY;
+      const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+      const duration = distance / 200;
+
+      if (targetX < characterX) {
+        character.classList.remove('flip-left');
+        character.classList.add('flip-right');
+      } else {
+        character.classList.remove('flip-right');
+        character.classList.add('flip-left');
+      }
+
+      character.style.transition = `left ${duration}s linear, top ${duration}s linear`;
+      character.style.left = `${targetX - characterRect.width / 2}px`;
+      character.style.top = `${targetY - characterRect.height / 2}px`;
+    });
+  </script>
+
+</body>
+</html>
